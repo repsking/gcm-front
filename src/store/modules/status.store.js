@@ -19,8 +19,13 @@ const mutations = {
   },
 }
 
+const getters = {
+  statusOptions: state => [{ value: null, text: 'Classer par status' },...state.list.map(({label, code}) => ({ text: label, value: code  }))]
+}
+
 export default {
   actions,
   mutations,
+  getters,
   state: state()
 }

@@ -7,7 +7,7 @@
       :origin-filter.sync="originFilter"
       :status-filter.sync="statusFilter"
       :handler-filter.sync="handlerFilter"
-      :origin-options="originOptions"
+      :origin-options="originsOptions"
       :status-options="statusOptions"
       :handler-options="handlerOptions"
     />
@@ -86,7 +86,6 @@
             <template #aside>
               <b-button
                 v-if="inFuture"
-                v-ripple.400="'rgba(113, 102, 240, 0.15)'"
                 variant="outline-primary"
                 class="btn-icon rounded-circle"
                 title="Ajouter dans contact"
@@ -170,7 +169,6 @@
           <p>
             <b-button
               v-if="inFuture && data.item.programme"
-              v-ripple.400="'rgba(0, 207, 232, 0.15)'"
               variant="outline-info"
               size="sm"
             >
@@ -211,7 +209,6 @@
           </b-avatar>
 
           <b-button
-            v-ripple.400="'rgba(255, 255, 255, 0.15)'"
             variant="warning"
             class="btn-icon rounded-circle"
           >
@@ -332,6 +329,7 @@ import { avatarText } from '@core/utils/filter'
 import DemandsListFilters from './DemandsListFilters.vue'
 import useDemandsList from './useDemandsList'
 import demandStoreModule from '../demandStoreModule'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -356,7 +354,17 @@ export default {
     demandComment: undefined,
     comment: undefined
   }),
+  computed: {
+    ...mapGetters('Origin', ['originsOptions']),
+    ...mapGetters('Status', ['statusOptions']),
+  },
+  created() {
+      this.fetchOrigins(),
+      this.fetchStatus()  
+  },
   methods: {
+    ...mapActions('Origin', ['fetchOrigins']),
+    ...mapActions('Status', ['fetchStatus']),
     search(query) {
       this.searchQuery = query
     },
@@ -394,23 +402,6 @@ export default {
     })
 
     const isAddNewUserSidebarActive = ref(false)
-
-    const originOptions = [
-      { value: null, text: 'Classer par Site' },
-      { text: 'Admin', value: 'admin' },
-      { text: 'Author', value: 'author' },
-      { text: 'Editor', value: 'editor' },
-      { text: 'Maintainer', value: 'maintainer' },
-      { text: 'Subscriber', value: 'subscriber' },
-    ]
-
-    const statusOptions = [
-      { value: null, text: 'Classer par status' },
-      { text: 'Basic', value: 'basic' },
-      { text: 'Company', value: 'company' },
-      { text: 'Enterprise', value: 'enterprise' },
-      { text: 'Team', value: 'team' },
-    ]
 
     const handlerOptions = [
       { value: null, text: 'Classer par assignation' },
@@ -472,8 +463,6 @@ export default {
       resolveUserStatusVariant,
       resolveOriginColor,
 
-      originOptions,
-      statusOptions,
       handlerOptions,
 
       // Extra Filters

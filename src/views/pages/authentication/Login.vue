@@ -196,8 +196,8 @@ export default {
       this.tryRequest(async() => {
           const res = await this.$store.dispatch('Authentification/login', { username, password })
           this.alertSuccess({title: "Connexion Réussie.",message: "Bienvenue"})
+          this.$router.push('/')
       })
-      this.$router.push('/')
     },
   },
 }

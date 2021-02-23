@@ -1,0 +1,10 @@
+#!/bin/sh
+ssh saliou@206.81.31.158 <<EOF
+ cd ~/gcm-font
+ git pull
+ npm i
+ pm2 restart all
+ exit
+EOF
+
+

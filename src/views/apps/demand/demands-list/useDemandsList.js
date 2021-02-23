@@ -110,7 +110,6 @@ export default function useDemandsList() {
   }
 
   const resolveOriginColor = origin => {
-    console.log(origin, "please")
     if (/com/i.test(origin)) return 'danger'
     if (/fr/i.test(origin)) return 'warning'
     if (/immo/i.test(origin)) return 'info'

@@ -23,12 +23,12 @@ const router = new VueRouter({
   routes: [
     { path: '/', redirect: { name: 'apps-demands-list' } },
     ...apps,
-    ...dashboard,
     ...pages,
-    ...chartsMaps,
+    ...others,
+    ...dashboard,
     ...formsTable,
     ...uiElements,
-    ...others,
+    ...chartsMaps,
     {
       path: '*',
       redirect: 'error-404',
@@ -36,9 +36,9 @@ const router = new VueRouter({
   ],
 })
 
-router.beforeEach((to, _, next) => {
+router.beforeEach((to, from, next) => {
   const isLoggedIn = isUserLoggedIn()
-
+  
   if(!isLoggedIn && to.name != 'auth-login') {
     return next({name: "auth-login"})
   }
@@ -61,9 +61,6 @@ router.beforeEach((to, _, next) => {
     const userData = getUserData()
     next(getHomeRouteForLoggedInUser(userData ? userData.role : null))
   }
-
-  console.log("Route to go",to)
-  console.log("Logged ? ", isLoggedIn)
 
   return next()
 })
