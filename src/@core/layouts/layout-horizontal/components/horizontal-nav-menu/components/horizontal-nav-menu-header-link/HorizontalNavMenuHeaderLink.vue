@@ -35,6 +35,10 @@ export default {
       required: true,
     },
   },
+  created() {
+      console.log('item',this.item)
+
+  },
   setup(props) {
     const { isActive, updateIsActive } = useHorizontalNavMenuHeaderLink(props.item)
 

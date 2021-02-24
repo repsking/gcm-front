@@ -1,5 +1,6 @@
 <template>
   <b-nav-item-dropdown
+    v-if="false"
     class="dropdown-cart mr-25"
     menu-class="dropdown-menu-media"
     right

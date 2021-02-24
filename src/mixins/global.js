@@ -1,14 +1,16 @@
 // Notification
 import { useToast } from 'vue-toastification/composition'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
-const toast = useToast()
 
-
-export default
-{
+export default {
   data: () => ({
     inFuture: false
   }),
+  computed: {
+    multiLang() {
+      return this.$store.state.appConfig.layout.multiLang
+    }   
+  },  
   methods: {
     async tryRequest (requestFunc, cbError = undefined) {
       try {
@@ -16,23 +18,35 @@ export default
         return res
       } catch (error) {
         if (!cbError) {
-          this.alertError({ title: 'Oops ! An error occured', message: error.message || error })
+          this.alertError(error.message || error )
         } else { cbError(error) }
       }
     },
-    alertSuccess ({ title = 'Success', message = 'No message defined' }) {
-      this.$bvToast.toast(message, {
-        title,
-        variant: 'success',
-        solid: true,
+    fgchvjb(text) {
+      this.$toast({
+        component: ToastificationContent,
+        position: 'top-right',
+        props: {
+          icon: 'CoffeeIcon',
+          variant: 'success',
+          text
+        },
       })
     },
-    alertError ({title =  'Oops, an error occured', message = 'No message defined' }) {
-      this.$bvToast.toast(message, {
-        title,
-        variant: 'danger',
-        solid: true,
-      })
+    alertSuccess ({ title = 'Success', message = 'No message defined' }) {
+      this.$toast.success(message)
+    },
+    alertError (text = 'Something wrong happened') {
+      this.$toast.error(text)
+      /*this.$toast({
+        component: ToastificationContent,
+        position: 'top-right',
+        props: {
+          icon: 'CoffeeIcon',
+          variant: 'success',
+          text
+        },
+      })*/
     }
   }
 }

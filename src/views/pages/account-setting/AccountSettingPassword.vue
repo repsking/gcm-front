@@ -88,6 +88,7 @@
             v-ripple.400="'rgba(255, 255, 255, 0.15)'"
             variant="primary"
             class="mt-1 mr-1"
+            @click="changePassword"
           >
             Save changes
           </b-button>
@@ -158,6 +159,17 @@ export default {
     togglePasswordRetype() {
       this.passwordFieldTypeRetype = this.passwordFieldTypeRetype === 'password' ? 'text' : 'password'
     },
+    changePassword() {
+      if(this.newPasswordValue != this.RetypePassword) {
+        this.alertError('Les deux derniers mots de passz ne correspondent pas')
+        return
+      } 
+    
+      this.tryRequest(async () => {
+        await this.$http.put('users/changePassword', {oldPassword: this.passwordValueOld , newPassword: this.newPasswordValue })
+        this.alertSuccess({message: 'Mot de passe mis à jour avec succès'})
+      })
+    }
   },
 }
 </script>

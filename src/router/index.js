@@ -13,6 +13,7 @@ import formsTable from './routes/forms-tables'
 import others from './routes/others'
 
 Vue.use(VueRouter)
+console.log({process})
 
 const router = new VueRouter({
   mode: 'history',

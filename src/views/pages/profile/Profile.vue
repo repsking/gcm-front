@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="Object.keys(profileData).length"
+    v-if="Object.keys(profileData)"
     id="user-profile"
   >
     <profile-header :header-data="profileData.header" />

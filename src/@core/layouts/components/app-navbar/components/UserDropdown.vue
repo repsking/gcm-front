@@ -89,7 +89,7 @@ export default {
     logout() {
        this.tryRequest(async() => {
           await this.$store.dispatch('Authentification/logout')
-          this.alertSuccess({title: "Au revoir.",message: "Bienvenue"})
+          this.alertSuccess({message: "Au revoir"})
       })
       this.$ability.update(initialAbility)
 

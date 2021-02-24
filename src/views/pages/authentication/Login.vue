@@ -6,7 +6,7 @@
       <b-link class="brand-logo">
         <vuexy-logo />
         <h2 class="brand-text text-primary ml-1">
-          Le Guide du Patrimoine
+          GDP client Manager
         </h2>
       </b-link>
       <!-- /Brand logo-->
@@ -41,7 +41,7 @@
             class="mb-1 font-weight-bold"
             title-tag="h2"
           >
-            Bienvenue
+            Connexion
           </b-card-title>
 
           <!-- form -->
@@ -79,7 +79,10 @@
               <b-form-group>
                 <div class="d-flex justify-content-between">
                   <label for="login-password">Mot de passe</label>
-                  <b-link :to="{name:'auth-forgot-password'}">
+                  <b-link
+                    v-if="inFutur"
+                    :to="{name:'auth-forgot-password'}"
+                  >
                     <small>Mot de passe oublié ?</small>
                   </b-link>
                 </div>
@@ -196,7 +199,7 @@ export default {
       this.tryRequest(async() => {
           const res = await this.$store.dispatch('Authentification/login', { username, password })
           this.alertSuccess({title: "Connexion Réussie.",message: "Bienvenue"})
-          this.$router.push('/')
+          this.$router.replace('/')
       })
     },
   },

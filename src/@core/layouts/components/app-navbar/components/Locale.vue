@@ -1,5 +1,6 @@
 <template>
   <b-nav-item-dropdown
+    v-if="multiLang"
     id="dropdown-grouped"
     variant="link"
     class="dropdown-language"

@@ -27,6 +27,9 @@ export default {
       required: true,
     },
   },
+  created() {
+
+  },
   setup() {
     const resolveNavComponent = item => {
       if (item.children) return 'horizontal-nav-menu-header-group'

@@ -1,6 +1,6 @@
 <template>
   <li
-    v-if="canViewHorizontalNavMenuHeaderGroup(item)"
+    v-if="true || canViewHorizontalNavMenuHeaderGroup(item)"
     class="dropdown nav-item"
     :class="{
       'sidebar-group-active active open': isActive,
@@ -51,6 +51,7 @@ export default {
       required: true,
     },
   },
+  
   setup(props) {
     const {
       isActive,

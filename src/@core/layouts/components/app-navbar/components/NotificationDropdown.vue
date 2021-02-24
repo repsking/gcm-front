@@ -1,5 +1,6 @@
 <template>
   <b-nav-item-dropdown
+    v-if="inFuture"
     class="dropdown-notification mr-25"
     menu-class="dropdown-menu-media"
     right

@@ -4,6 +4,7 @@
 
     <!-- Filters -->
     <demands-list-filters
+      v-if="inFuture"
       :origin-filter.sync="originFilter"
       :status-filter.sync="statusFilter"
       :handler-filter.sync="handlerFilter"
@@ -320,7 +321,7 @@
 <script>
 import {
   BCard, BRow, BCol, BFormInput, BButton, BTable, BMedia,
-  BBadge, BDropdown, BDropdownItem, BPagination,BModal, BFormTextarea,BAvatar
+  BBadge, BDropdown, BDropdownItem, BPagination,BModal, BFormTextarea
 } from 'bootstrap-vue'
 import vSelect from 'vue-select'
 import store from '@/store'
@@ -347,7 +348,6 @@ export default {
     BPagination,
     BModal,
     BFormTextarea,
-    BAvatar,
     vSelect,
   },
   data:() => ({
@@ -453,9 +453,6 @@ export default {
       isSortDirDesc,
       refUserListTable,
       refetchData,
-
-      // Filter
-      avatarText,
 
       // UI
       resolveUserRoleVariant,

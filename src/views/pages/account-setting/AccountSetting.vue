@@ -6,7 +6,6 @@
     nav-wrapper-class="col-md-3 col-12"
     nav-class="nav-left"
   >
-
     <!-- general tab -->
     <b-tab active>
 
@@ -44,44 +43,6 @@
     </b-tab>
     <!--/ change password tab -->
 
-    <!-- info -->
-    <b-tab>
-
-      <!-- title -->
-      <template #title>
-        <feather-icon
-          icon="InfoIcon"
-          size="18"
-          class="mr-50"
-        />
-        <span class="font-weight-bold">Information</span>
-      </template>
-
-      <account-setting-information
-        v-if="options.info"
-        :information-data="options.info"
-      />
-    </b-tab>
-
-    <!-- social links -->
-    <b-tab>
-
-      <!-- title -->
-      <template #title>
-        <feather-icon
-          icon="LinkIcon"
-          size="18"
-          class="mr-50"
-        />
-        <span class="font-weight-bold">Social</span>
-      </template>
-
-      <account-setting-social
-        v-if="options.social"
-        :social-data="options.social"
-      />
-    </b-tab>
-
     <!-- notification -->
     <b-tab>
 
@@ -107,8 +68,6 @@
 import { BTabs, BTab } from 'bootstrap-vue'
 import AccountSettingGeneral from './AccountSettingGeneral.vue'
 import AccountSettingPassword from './AccountSettingPassword.vue'
-import AccountSettingInformation from './AccountSettingInformation.vue'
-import AccountSettingSocial from './AccountSettingSocial.vue'
 import AccountSettingNotification from './AccountSettingNotification.vue'
 
 export default {
@@ -117,8 +76,6 @@ export default {
     BTab,
     AccountSettingGeneral,
     AccountSettingPassword,
-    AccountSettingInformation,
-    AccountSettingSocial,
     AccountSettingNotification,
   },
   data() {
@@ -126,8 +83,25 @@ export default {
       options: {},
     }
   },
-  beforeCreate() {
-    this.$http.get('/account-setting/data').then(res => { this.options = res.data })
+  created() {
+  this.options = {
+    general: {
+      avatar: require('@/assets/images/portrait/small/avatar-s-11.jpg'),
+      username: 'johndoe',
+      fullName: 'John Doe',
+      email: 'granger007@hogward.com',
+      company: 'Crystal Technologies',
+    },
+    notification: {
+      commentOnArticle: true,
+      AnswerOnForm: true,
+      followMe: false,
+      newAnnouncements: true,
+      productUpdates: true,
+      blogDigest: false,
+    },
+}
+    //this.$http.get('/account-setting/data').then(res => { this.options = res.data })
   },
 }
 </script>

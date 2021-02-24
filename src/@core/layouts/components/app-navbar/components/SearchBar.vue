@@ -1,5 +1,8 @@
 <template>
-  <li class="nav-item nav-search">
+  <li
+    v-if="inFuture"
+    class="nav-item nav-search"
+  >
 
     <!-- Icon -->
     <a

@@ -1,5 +1,8 @@
 <template>
-  <b-navbar-nav class="nav">
+  <b-navbar-nav
+    v-if="inFuture"
+    class="nav"
+  >
     <b-nav-item
       v-for="(bookmark, index) in bookmarks"
       :id="`bookmark-${index}`"
