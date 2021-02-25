@@ -166,7 +166,7 @@ export default {
       } 
     
       this.tryRequest(async () => {
-        await this.$http.put('users/changePassword', {oldPassword: this.passwordValueOld , newPassword: this.newPasswordValue })
+        await this.$store.dispatch('Authentification/updatePassword', {oldPassword: this.passwordValueOld , newPassword: this.newPasswordValue }) 
         this.alertSuccess({message: 'Mot de passe mis à jour avec succès'})
       })
     }
