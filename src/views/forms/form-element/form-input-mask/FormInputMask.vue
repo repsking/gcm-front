@@ -1,3 +1,4 @@
+<!-- eslint-disable import/no-extraneous-dependencies -->
 <template>
   <b-card-code title="Input Mask">
     <b-row>
@@ -200,7 +201,6 @@ import {
   BRow, BCol, BFormGroup, BInputGroupPrepend, BInputGroup,
 } from 'bootstrap-vue'
 import Cleave from 'vue-cleave-component'
-// eslint-disable-next-line import/no-extraneous-dependencies
 import 'cleave.js/dist/addons/cleave-phone.us'
 import { codeMask } from './code'
 
