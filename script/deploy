@@ -1,10 +1,10 @@
 #!/bin/sh
-ssh saliou@206.81.31.158 <<EOF
+ssh saliou@37.59.125.47 <<EOF
  cd ~/gcm-front
  git pull
  npm i
  npm run build
- pm2 restart all
+ docker run -d -p 8080:80 gdpcm-image
  exit
 EOF
 
