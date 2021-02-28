@@ -5,9 +5,7 @@ import { getUserData } from "@/auth/utils"
 import axios from "axios"
 
 const axiosIns = axios.create({
-  baseURL: "http://localhost:3008/api",
-  timeout: 10000,
-  // headers: {'X-Custom-Header': 'foobar'}
+  baseURL: process.env.VUE_APP_API_URL,
 })
 
 const error500 = {
