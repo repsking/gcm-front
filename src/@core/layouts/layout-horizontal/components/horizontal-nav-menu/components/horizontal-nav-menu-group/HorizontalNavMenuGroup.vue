@@ -1,6 +1,5 @@
 <template>
   <li
-    v-if="canViewVerticalNavMenuGroup(item)"
     class="dropdown dropdown-submenu"
     :class="{
       'show': isOpen,

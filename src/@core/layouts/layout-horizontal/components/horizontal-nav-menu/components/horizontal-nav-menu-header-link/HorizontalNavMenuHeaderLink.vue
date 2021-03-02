@@ -1,6 +1,5 @@
 <template>
   <li
-    v-if="canViewHorizontalNavMenuHeaderLink(item)"
     class="nav-item"
     :class="{'sidebar-group-active active': isActive}"
   >

@@ -13,7 +13,6 @@ export default {
     HorizontalNavMenuItems,
   },
   setup() {
-    console.log(navMenuItems)
     return {
       navMenuItems,
     }
