@@ -1,6 +1,5 @@
 <template>
   <b-modal
-    v-if="inFuture"
     id="modal-comment"
     ref="modal-comment"
     cancel-variant="outline-secondary"
