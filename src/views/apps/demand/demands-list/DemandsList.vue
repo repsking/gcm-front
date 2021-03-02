@@ -69,7 +69,7 @@
         primary-key="id"
         :sort-by.sync="sortBy"
         show-empty
-        empty-text="No matching records found"
+        empty-text="Aucune demande de contact"
         :sort-desc.sync="isSortDirDesc"
       >
 
@@ -194,13 +194,10 @@
 
         <!-- Column: Actions -->
         <template #cell(actions)="data">
-
-  
           <b-avatar
-            v-if="inFuture"
             variant="primary"
             button
-            :badge="!!data.item.comment"
+            :badge="!!(data.item.comment && data.item.comment.text)"
             badge-variant="warning"
             badge-left
             badge-top
@@ -293,35 +290,20 @@
       </div>
     </b-card>
 
-    <!-- modal login-->
-    <b-modal
-      v-if="inFuture"
-      id="modal-login"
-      ref="modal-login"
-      cancel-variant="outline-secondary"
-      ok-title="valider"
-      cancel-title="Fermer"
-      centered
-      :title="demandComment && demandComment.comment ? 'Commentaire' : 'Ajouter un commentaire'"
-    >
-      <b-form>
-        <b-form-group>
-          <b-form-textarea
-            id="textarea-rows"
-            placeholder="Noter un commentaire..."
-            rows="8"
-            :value="demandComment && demandComment.comment && demandComment.comment.text"
-          />
-        </b-form-group>
-      </b-form>
-    </b-modal>
+    <comment-modal
+      v-if="demandComment"
+      :demand="demandComment"
+      @close="closeCommentModal"
+      @commentAdded="closeCommentModal"
+    />
+    
   </div>
 </template>
 
 <script>
 import {
   BCard, BRow, BCol, BFormInput, BButton, BTable, BMedia,
-  BBadge, BDropdown, BDropdownItem, BPagination,BModal, BFormTextarea
+  BBadge, BDropdown, BDropdownItem, BPagination, BAvatar
 } from 'bootstrap-vue'
 import vSelect from 'vue-select'
 import store from '@/store'
@@ -330,7 +312,8 @@ import { avatarText } from '@core/utils/filter'
 import DemandsListFilters from './DemandsListFilters.vue'
 import useDemandsList from './useDemandsList'
 import demandStoreModule from '../demandStoreModule'
-import { mapActions, mapGetters } from 'vuex'
+import CommentModal from './CommentModal'
+import { mapActions, mapGetters, mapState } from 'vuex'
 
 export default {
   components: {
@@ -346,17 +329,17 @@ export default {
     BDropdown,
     BDropdownItem,
     BPagination,
-    BModal,
-    BFormTextarea,
+    BAvatar,
     vSelect,
+    CommentModal
   },
   data:() => ({
     demandComment: undefined,
-    comment: undefined
   }),
   computed: {
     ...mapGetters('Origin', ['originsOptions']),
     ...mapGetters('Status', ['statusOptions']),
+    ...mapState('app-demands', ['demands'])
   },
   created() {
       this.fetchOrigins(),
@@ -370,16 +353,9 @@ export default {
     },
     viewCommentModal(demand) {
       this.demandComment = demand
-      this.$refs['modal-login'].show()
     },
-    addComment ({id}) {
-      this.tryRequest(async () => {
-        const comment = "Comment Tester"
-        if (!comment) { return }
-        await this.$http.post(`demands/addComment/${id}`, { comment })
-        this.alertSuccess({ message: 'Commentaire enregistré' })
-        this.$emit('add-comment', { comment })
-      })
+    closeCommentModal() { 
+      this.demandComment = undefined
     },
     deleteDemand () {
       if (confirm('Are you to delete this row ?')) {
@@ -391,7 +367,7 @@ export default {
     },
   },
   setup() {
-    const USER_APP_STORE_MODULE_NAME = 'app-user'
+    const USER_APP_STORE_MODULE_NAME = 'app-demands'
 
     // Register module
     if (!store.hasModule(USER_APP_STORE_MODULE_NAME)) store.registerModule(USER_APP_STORE_MODULE_NAME, demandStoreModule)

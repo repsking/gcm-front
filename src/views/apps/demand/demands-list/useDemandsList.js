@@ -51,7 +51,7 @@ export default function useDemandsList() {
 
   const fetchUsers = (ctx, callback) => {
     store
-      .dispatch('app-user/fetchDemands', {
+      .dispatch('app-demands/fetchDemands', {
         search: searchQuery.value,
         perPage: perPage.value,
         page: currentPage.value,
