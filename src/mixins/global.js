@@ -4,7 +4,7 @@ import ToastificationContent from '@core/components/toastification/Toastificatio
 
 export default {
   data: () => ({
-    inFuture: false
+    inFuture: true
   }),
   computed: {
     multiLang() {
@@ -22,6 +22,8 @@ export default {
         } else { cbError(error) }
       }
     },
+    getUserInitials: user => user && user.prenom && user.nom && `${user.prenom[0]}${user.nom[0]}`,
+    getFullName: user => user && user.prenom && user.nom && `${user.prenom} ${user.nom}`,
     fgchvjb(text) {
       this.$toast({
         component: ToastificationContent,

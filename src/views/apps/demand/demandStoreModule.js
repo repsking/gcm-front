@@ -10,10 +10,10 @@ export default {
   getters: {},
   mutations: {
     SET_DEMANDS: (state, list) => state.demands = list,
-    SET_DEMAND_COMMENT(state, { demandId, comment }) {
+    SET_DEMAND_FIELD(state, field, { demandId, value }) {
       const index = state.findIndex(demand => demand.id === demandId)
-      if (index) Vue.set(state.demands[index], 'comment', comment)
-      else console.warn('Index not found while adding a new comment in demands list')
+      if (index) Vue.set(state.demands[index], field, value)
+      else console.warn(`Index not found while adding ${field} in demands list`)
     }
 
   },
@@ -25,10 +25,17 @@ export default {
         return res.data
       }
     },
+    async assignCollaborator({ commit }, {demandId, userId}) {
+      const res = await $http.post(`/demands/assignTo/${demandId}`, { userId })
+      if (res && res.data) {
+        commit('SET_DEMAND_FIELD','handler', { demandId, value: {userId} })
+        return res.data
+      }
+    },
     async addComment({ commit }, { demandId, comment }) {
       const res = await $http.post(`demands/addComment/${demandId}`, { comment })
       if (res && res.data) {
-        commit('SET_DEMAND_COMMENT', { demandId, comment })
+        commit('SET_DEMAND_FIELD','comment', { demandId, value: comment })
         return res.data
       }
       //TODO: Uncomment when the back will provide the new comment object

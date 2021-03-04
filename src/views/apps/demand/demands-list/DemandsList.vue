@@ -1,7 +1,5 @@
 <template>
-
   <div>
-
     <!-- Filters -->
     <demands-list-filters
       v-if="inFuture"
@@ -18,12 +16,9 @@
       no-body
       class="mb-0"
     >
-
       <div class="m-2">
-
         <!-- Table Top -->
         <b-row>
-
           <!-- Per Page -->
           <b-col
             cols="12"
@@ -53,11 +48,9 @@
                 placeholder="Filtrer par demandes de contact . . ."
                 debounce="500"
               />
-       
             </div>
           </b-col>
         </b-row>
-
       </div>
 
       <b-table
@@ -72,8 +65,6 @@
         empty-text="Aucune demande de contact"
         :sort-desc.sync="isSortDirDesc"
       >
-
-
         <!-- Column: Date -->
         <template #cell(createdAt)="data">
           <b-media vertical-align="center">
@@ -94,48 +85,54 @@
                 <feather-icon icon="UserPlusIcon" />
               </b-button>
             </template>
-           
+
             <p v-if="data.item.user.name">
-              Nom: <span
+              Nom:
+              <span
                 class="search-link text-primary"
                 @click="search(data.item.user.name)"
-              > {{ data.item.user.name }} </span>
-      
-            </p> 
+              >
+                {{ data.item.user.name }}
+              </span>
+            </p>
             <p v-if="data.item.user.firstname">
-              Prenom: <span
+              Prenom:
+              <span
                 class="search-link text-primary"
                 @click="search(data.item.user.firstname)"
-              > {{ data.item.user.firstname }} </span>
-            </p> 
+              >
+                {{ data.item.user.firstname }}
+              </span>
+            </p>
             <p
               v-if="data.item.user.email"
               class="search-link text-primary"
               @click="search(data.item.user.email)"
-            >    <feather-icon
-              icon="MailIcon"
-              size="18"
-              class="mr-50"
-            /> {{ data.item.user.email }} </p> 
+            >
+              <feather-icon
+                icon="MailIcon"
+                size="18"
+                class="mr-50"
+              /> {{ data.item.user.email }}
+            </p>
 
             <p
               v-if="data.item.user.phone"
               class="search-link text-primary"
               @click="search(data.item.user.phone)"
-            >    <feather-icon
-              icon="PhoneIcon"
-              size="18"
-              class="mr-50"
-            /> {{ data.item.user.phone }}</p> 
-
-
+            >
+              <feather-icon
+                icon="PhoneIcon"
+                size="18"
+                class="mr-50"
+              /> {{ data.item.user.phone }}
+            </p>
           </b-media>
         </template>
 
         <!-- Column: Status -->
         <template #cell(status)="data">
           <div class="text-nowrap">
-          
             <b-badge
               v-if="data.item.handler.status && data.item.handler.status.label"
               pill
@@ -161,9 +158,8 @@
 
         <!-- Column: Message -->
         <template #cell(message)="data">
-
           <!--  Do not forget to truncte the message -->
-          
+
           <p>
             {{ data.item.message || "Aucun message" }}
           </p>
@@ -176,10 +172,7 @@
               Voir programme
             </b-button>
           </p>
-
         </template>
-
-
 
         <!-- Column: Url -->
         <template #cell(url)="data">
@@ -190,7 +183,6 @@
           > Voir page </a>
           <i v-else>Aucune url fournie</i>
         </template>
-       
 
         <!-- Column: Actions -->
         <template #cell(actions)="data">
@@ -206,20 +198,24 @@
             <feather-icon icon="FileTextIcon" />
           </b-avatar>
 
-          <b-button
-            variant="warning"
-            class="btn-icon rounded-circle"
+          <b-avatar
+            variant="primary"
+            button
+            :text="data.item.handler && data.item.handler.userId && getUserInitials(data.item.handler.userId)"
+            :title="data.item.handler && data.item.handler.userId && getFullName(data.item.handler.userId)"
+            @click="viewAssignUserModal(data.item)"
           >
-            <feather-icon icon="UserPlusIcon" />
-          </b-button>
+            <feather-icon
+              v-if="!(data.item.handler && data.item.handler.userId)"
+              icon="UserPlusIcon"
+            />
+          </b-avatar>
 
-      
           <b-dropdown
             variant="link"
             no-caret
             :right="$store.state.appConfig.isRTL"
           >
-            
             <template #button-content>
               <feather-icon
                 icon="MoreVerticalIcon"
@@ -227,13 +223,11 @@
                 class=" text-body"
               />
             </template>
-    
 
             <b-dropdown-item :to="{ name: 'apps-users-view', params: { id: data.item.id } }">
               <feather-icon icon="FileTextIcon" />
               <span class="align-middle ml-50">Details</span>
             </b-dropdown-item>
-
 
             <b-dropdown-item>
               <feather-icon icon="TrashIcon" />
@@ -241,17 +235,17 @@
             </b-dropdown-item>
           </b-dropdown>
         </template>
-
       </b-table>
       <div class="mx-2 mb-2">
         <b-row>
-
           <b-col
             cols="12"
             sm="6"
             class="d-flex align-items-center justify-content-center justify-content-sm-start"
           >
-            <span class="text-muted">Showing {{ dataMeta.from }} de {{ dataMeta.to }} of {{ dataMeta.of }} demands</span>
+            <span
+              class="text-muted"
+            >Showing {{ dataMeta.from }} de {{ dataMeta.to }} of {{ dataMeta.of }} demands</span>
           </b-col>
           <!-- Pagination -->
           <b-col
@@ -259,7 +253,6 @@
             sm="6"
             class="d-flex align-items-center justify-content-center justify-content-sm-end"
           >
-
             <b-pagination
               v-model="currentPage"
               :total-rows="totalDemands"
@@ -283,9 +276,7 @@
                 />
               </template>
             </b-pagination>
-
           </b-col>
-
         </b-row>
       </div>
     </b-card>
@@ -296,24 +287,41 @@
       @close="closeCommentModal"
       @commentAdded="closeCommentModal"
     />
-    
+
+    <assign-demand-modal
+      v-if="demandAssign"
+      :demand="demandAssign"
+      @close="closeAssignUserModal"
+      @userAssigned="closeAssignUserModal"
+    />
   </div>
 </template>
 
 <script>
 import {
-  BCard, BRow, BCol, BFormInput, BButton, BTable, BMedia,
-  BBadge, BDropdown, BDropdownItem, BPagination, BAvatar
-} from 'bootstrap-vue'
-import vSelect from 'vue-select'
-import store from '@/store'
-import { ref, onUnmounted } from '@vue/composition-api'
-import { avatarText } from '@core/utils/filter'
-import DemandsListFilters from './DemandsListFilters.vue'
-import useDemandsList from './useDemandsList'
-import demandStoreModule from '../demandStoreModule'
-import CommentModal from './CommentModal'
-import { mapActions, mapGetters, mapState } from 'vuex'
+  BCard,
+  BRow,
+  BCol,
+  BFormInput,
+  BButton,
+  BTable,
+  BMedia,
+  BBadge,
+  BDropdown,
+  BDropdownItem,
+  BPagination,
+  BAvatar,
+} from "bootstrap-vue"
+import vSelect from "vue-select"
+import store from "@/store"
+import { ref, onUnmounted } from "@vue/composition-api"
+import { avatarText } from "@core/utils/filter"
+import DemandsListFilters from "./DemandsListFilters.vue"
+import useDemandsList from "./useDemandsList"
+import demandStoreModule from "../demandStoreModule"
+import CommentModal from "./CommentModal"
+import AssignDemandModal from "./AssignDemandModal"
+import { mapActions, mapGetters, mapState } from "vuex"
 
 export default {
   components: {
@@ -331,46 +339,58 @@ export default {
     BPagination,
     BAvatar,
     vSelect,
-    CommentModal
+    CommentModal,
+    AssignDemandModal,
   },
-  data:() => ({
+  data: () => ({
     demandComment: undefined,
+    demandAssign: undefined,
   }),
   computed: {
-    ...mapGetters('Origin', ['originsOptions']),
-    ...mapGetters('Status', ['statusOptions']),
-    ...mapState('app-demands', ['demands'])
+    ...mapGetters("Origin", ["originsOptions"]),
+    ...mapGetters("Status", ["statusOptions"]),
+    ...mapState("app-demands", ["demands"]),
   },
   created() {
-      this.fetchOrigins(),
-      this.fetchStatus()  
+    this.fetchOrigins(), this.fetchStatus()
   },
   methods: {
-    ...mapActions('Origin', ['fetchOrigins']),
-    ...mapActions('Status', ['fetchStatus']),
+    ...mapActions("Origin", ["fetchOrigins"]),
+    ...mapActions("Status", ["fetchStatus"]),
+
     search(query) {
       this.searchQuery = query
     },
     viewCommentModal(demand) {
       this.demandComment = demand
     },
-    closeCommentModal() { 
+    viewAssignUserModal(demand) {
+      this.demandAssign = demand
+    },
+    closeCommentModal() {
       this.demandComment = undefined
     },
-    deleteDemand () {
-      if (confirm('Are you to delete this row ?')) {
+    closeAssignUserModal() {
+      this.demandAssign = undefined
+    },
+    deleteDemand() {
+      if (confirm("Are you to delete this row ?")) {
         this.tryRequest(async () => {
           await this.$http.delete(`demands/${this.demand.id}`)
-          this.alertSuccess({ message: 'La demande de contact a bien été supprimée', title: 'Demande de contact Supprimée' })
+          this.alertSuccess({
+            message: "La demande de contact a bien été supprimée",
+            title: "Demande de contact Supprimée",
+          })
         })
       }
     },
   },
   setup() {
-    const USER_APP_STORE_MODULE_NAME = 'app-demands'
+    const USER_APP_STORE_MODULE_NAME = "app-demands"
 
     // Register module
-    if (!store.hasModule(USER_APP_STORE_MODULE_NAME)) store.registerModule(USER_APP_STORE_MODULE_NAME, demandStoreModule)
+    if (!store.hasModule(USER_APP_STORE_MODULE_NAME))
+      store.registerModule(USER_APP_STORE_MODULE_NAME, demandStoreModule)
 
     // UnRegister on leave
     onUnmounted(() => {
@@ -380,10 +400,10 @@ export default {
     const isAddNewUserSidebarActive = ref(false)
 
     const handlerOptions = [
-      { value: null, text: 'Classer par assignation' },
-      { text: 'Pending', value: 'pending' },
-      { text: 'Active', value: 'active' },
-      { text: 'Inactive', value: 'inactive' },
+      { value: null, text: "Classer par assignation" },
+      { text: "Pending", value: "pending" },
+      { text: "Active", value: "active" },
+      { text: "Inactive", value: "inactive" },
     ]
 
     const {
@@ -413,7 +433,6 @@ export default {
     } = useDemandsList()
 
     return {
-
       // Sidebar
       isAddNewUserSidebarActive,
 
@@ -457,5 +476,5 @@ export default {
 </style>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/vue-select.scss';
+@import "@core/scss/vue/libs/vue-select.scss";
 </style>
