@@ -80,7 +80,7 @@
                 <div class="d-flex justify-content-between">
                   <label for="login-password">Mot de passe</label>
                   <b-link
-                    v-if="inFutur"
+                    v-if="inFuture"
                     :to="{name:'auth-forgot-password'}"
                   >
                     <small>Mot de passe oublié ?</small>
