@@ -1,5 +1,7 @@
 import Vue from "vue"
 import { getUserData } from "@/auth/utils"
+import store from "@/store"
+import router from '@/router'
 
 // axios
 import axios from "axios"
@@ -8,10 +10,9 @@ const axiosIns = axios.create({
   baseURL: process.env.VUE_APP_API_URL,
 })
 
-const error500 = {
+const unhandledError = {
   status: 500,
-  message:
-    "Une erreur inconnue s'est produite au niveau du serveur distant. Nous mettons tout en ouvre pour régler ce désagrément.",
+  message: "Une erreur inconnue s'est produite au niveau du serveur distant. Nous mettons tout en oeuvre pour régler ce désagrément.",
 }
 
 axiosIns.interceptors.response.use(null, error => {
@@ -21,18 +22,18 @@ axiosIns.interceptors.response.use(null, error => {
 
     if (status === 498) {
       store.dispatch("authentification/disconnect")
-      obj = { status, message: "Votre session a expiré. Merci de vous reconnecter." }
+      obj = { status, message: "Votre session a expiré. Vous devez vous reconnecter." }
+      router.replace('/login')
       return Promise.reject(obj)
     }
-    obj =
-      status >= 500
-        ? { ...error500, status }
-        : { status, message: data.message || "No error message provided by the API" }
+    obj = status >= 500
+        ? {status, message: unhandledError.message }
+        : { status, message: data.message || unhandledError.message }
   } else if (error.request) {
-    obj = error500
+    obj = unhandledError
   } else {
-    console.error("Error from axios : ", error.message)
-    obj = error500
+    console.error("Error unhandled from API : ", error)
+    obj = unhandledError
   }
 
   return Promise.reject(obj)
