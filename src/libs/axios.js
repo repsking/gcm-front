@@ -21,7 +21,7 @@ axiosIns.interceptors.response.use(null, error => {
     const { status, data } = error.response
 
     if (status === 498) {
-      store.dispatch("authentification/disconnect")
+      store.dispatch("Authentification/logout")
       obj = { status, message: "Votre session a expiré. Vous devez vous reconnecter." }
       router.replace('/login')
       return Promise.reject(obj)
