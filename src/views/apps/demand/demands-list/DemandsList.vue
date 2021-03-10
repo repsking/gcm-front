@@ -141,7 +141,7 @@
             >
               {{ data.item.handler.status.label }}
             </b-badge>
-            <i v-else>Aucune url fournie</i>
+            <i v-else>Aucun status</i>
           </div>
         </template>
 
@@ -158,16 +158,17 @@
 
         <!-- Column: Message -->
         <template #cell(message)="data">
-          <!--  Do not forget to truncte the message -->
+          <!-- TODO: Do not forget to trunc the message -->
 
           <p>
             {{ data.item.message || "Aucun message" }}
           </p>
           <p>
             <b-button
-              v-if="inFuture && data.item.programme"
-              variant="outline-info"
+              v-if="data.item.programme"
+              variant="outline-primary"
               size="sm"
+              @click="demandProgramme = data.item"
             >
               Voir programme
             </b-button>
@@ -294,6 +295,11 @@
       @close="closeAssignUserModal"
       @userAssigned="closeAssignUserModal"
     />
+    <view-programme-modal
+      v-if="demandProgramme && demandProgramme.programme"
+      :programme="demandProgramme.programme"
+      @close="demandProgramme = undefined"
+    />
   </div>
 </template>
 
@@ -321,6 +327,7 @@ import useDemandsList from "./useDemandsList"
 import demandStoreModule from "../demandStoreModule"
 import CommentModal from "./CommentModal"
 import AssignDemandModal from "./AssignDemandModal"
+import ViewProgrammeModal from './ViewProgrammeModal'
 import { mapActions, mapGetters, mapState } from "vuex"
 
 export default {
@@ -341,10 +348,12 @@ export default {
     vSelect,
     CommentModal,
     AssignDemandModal,
+    ViewProgrammeModal
   },
   data: () => ({
     demandComment: undefined,
     demandAssign: undefined,
+    demandProgramme: undefined
   }),
   computed: {
     ...mapGetters("Origin", ["originsOptions"]),
@@ -352,7 +361,8 @@ export default {
     ...mapState("app-demands", ["demands"]),
   },
   created() {
-    this.fetchOrigins(), this.fetchStatus()
+    this.fetchOrigins()
+    this.fetchStatus()
   },
   methods: {
     ...mapActions("Origin", ["fetchOrigins"]),
