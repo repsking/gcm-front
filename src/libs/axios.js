@@ -7,7 +7,8 @@ import router from '@/router'
 import axios from "axios"
 
 const axiosIns = axios.create({
-  baseURL: process.env.VUE_APP_API_URL,
+  baseURL: process.env.NODE_ENV === 'production' ? process.env.VUE_APP_API_PROD_URL : process.env.VUE_APP_API_URL,
+
 })
 
 const unhandledError = {

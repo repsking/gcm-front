@@ -1,11 +1,13 @@
 .DS_Store
 node_modules
 /dist
+/crm
 
 # local env files
 .env
 .env.local
 .env.*.local
+.env.*
 
 # Log files
 npm-debug.log*
