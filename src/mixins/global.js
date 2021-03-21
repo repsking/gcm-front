@@ -1,10 +1,10 @@
 // Notification
 import { useToast } from 'vue-toastification/composition'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
-
 export default {
   data: () => ({
-    inFuture: true
+    inFuture: process.env.VUE_APP_FUTURE && process.env.VUE_APP_FUTURE === 'true',
+    isDev: process.env.NODE_ENV && /dev/i.test(process.env.NODE_ENV)
   }),
   computed: {
     multiLang() {
